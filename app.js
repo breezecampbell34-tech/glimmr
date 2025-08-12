@@ -16,39 +16,61 @@ const byId = (id) => document.getElementById(id);
 
 /* ====== DATA (sample products) ====== */
 const PRODUCTS = [
+  // Mirror Welcome Sign Rental
   {
-    id: "welcome-sign",
-    name: "Mirror Welcome Sign",
+    id: "mirror-welcome",
+    name: "Mirror Welcome Sign (Rental)",
     price: 8000,
     category: "welcome",
-    img: "assets/img/welcome-sign.jpg", // replace with actual file path
+    img: "assets/img/mirror-welcome.jpg", // replace with your real image
     desc: "Elegant mirror welcome sign with crisp vinyl lettering. 3 hours rental included. Delivery charged separately.",
     featured: 1
   },
+  {
+    id: "decor-addon",
+    name: "Add-on Décor",
+    price: 2000,
+    category: "decor",
+    img: "assets/img/decor-addon.jpg", // replace with your real image
+    desc: "Candles, lanterns, flowers, and more to style your signage.",
+    featured: 0
+  },
+
+  // Foam Board / PVC Welcome Signs (Purchase)
+  {
+    id: "foamboard-welcome",
+    name: "Foam Board / PVC Welcome Sign",
+    price: 5250,
+    category: "welcome",
+    img: "assets/img/foamboard-welcome.jpg", // replace with your real image
+    desc: "Full-color printed welcome sign on foam board or PVC. Select size at checkout.",
+    featured: 1,
+    sizes: [
+      { label: "18\" × 24\"", price: 5250 },
+      { label: "24\" × 36\"", price: 9750 },
+      { label: "30\" × 40\"", price: 13245 },
+      { label: "36\" × 48\"", price: 18750 }
+    ]
+  },
+
+  // Seating Chart
   {
     id: "seating-chart",
     name: "Seating Chart",
     price: 10000,
     category: "seating",
-    img: "assets/img/seating-chart.jpg", // replace with actual file path
+    img: "assets/img/seating-chart.jpg", // replace with your real image
     desc: "Custom seating chart on mirror or acrylic board. Delivery charged separately.",
     featured: 1
   },
+
+  // Custom Vinyl Decals
   {
-    id: "decor-addons",
-    name: "Add-on Decor",
-    price: 2000,
-    category: "decor",
-    img: "assets/img/decor-addons.jpg", // replace with actual file path
-    desc: "Candles, lanterns, flowers, and more to style your signage.",
-    featured: 0
-  },
-  {
-    id: "decals",
+    id: "vinyl-decals",
     name: "Custom Vinyl Decals",
     price: 1000,
     category: "vinyl",
-    img: "assets/img/decals.jpg", // replace with actual file path
+    img: "assets/img/vinyl-decals.jpg", // replace with your real image
     desc: "Personalized decals for boxes, glassware, favors, and DIY projects. Price starts at $1,000.",
     featured: 0
   }
@@ -418,5 +440,6 @@ function init(){
   initContactForm();
 }
 document.addEventListener("DOMContentLoaded", init);
+
 
 
