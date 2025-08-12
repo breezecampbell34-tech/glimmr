@@ -1,11 +1,11 @@
 /* ====== CONFIG (edit these) ====== */
-const GLIMMR_EMAIL = "hudsoncreations@outlook.com";              // replace with your email
-const GLIMMR_WHATSAPP = "876-566-6095";                 // digits only, country code first (e.g., 1876xxxxxxx)
+const GLIMMR_EMAIL = "hello@example.com";     // replace with your email
+const GLIMMR_WHATSAPP = "1876XXXXXXX";        // digits only, country code first (e.g., 1876...)
 const CURRENCY = "JMD";
 
 /* ====== UTIL ====== */
-const $ = (sel, root = document) => root.querySelector(sel);
-const $$ = (sel, root = document) => [...root.querySelectorAll(sel)];
+const $  = (sel, root=document) => root.querySelector(sel);
+const $$ = (sel, root=document) => [...root.querySelectorAll(sel)];
 const fmtCurrency = (n) => {
   try { return new Intl.NumberFormat('en-JM',{style:'currency',currency:CURRENCY,maximumFractionDigits:0}).format(n); }
   catch { return `JMD $${Math.round(n).toLocaleString()}`; }
@@ -14,76 +14,76 @@ const save = (k,v)=> localStorage.setItem(k, JSON.stringify(v));
 const load = (k, d=[]) => { try{ return JSON.parse(localStorage.getItem(k)) ?? d } catch { return d } };
 const byId = (id) => document.getElementById(id);
 
-/* ====== DATA (sample products) ====== */
+/* ====== DATA (Glimmr) ====== */
 const PRODUCTS = [
-  // Mirror Welcome Sign Rental
+  // Mirror Welcome Sign (Rental)
   {
     id: "mirror-welcome",
     name: "Mirror Welcome Sign (Rental)",
-    price: 8000,
+    price: 8000, // base rental
     category: "welcome",
-    img: "assets/img/mirror-welcome.jpg", // replace with your real image
+    img: "assets/img/mirror-welcome.jpg",
     desc: "Elegant mirror welcome sign with crisp vinyl lettering. 3 hours rental included. Delivery charged separately.",
     featured: 1
   },
+  // Decor add-on
   {
     id: "decor-addon",
     name: "Add-on Décor",
     price: 2000,
     category: "decor",
-    img: "assets/img/decor-addon.jpg", // replace with your real image
-    desc: "Candles, lanterns, flowers, and more to style your signage.",
+    img: "assets/img/decor-addon.jpg",
+    desc: "Candles, lanterns, flowers, and styling to elevate your signage.",
     featured: 0
   },
-
-  // Foam Board / PVC Welcome Signs (Purchase)
+  // Foam/PVC Welcome Signs (Purchase) — with size options
   {
     id: "foamboard-welcome",
-    name: "Foam Board / PVC Welcome Sign",
-    price: 5250,
+    name: "Foam Board / PVC Welcome Sign (Purchase)",
+    price: 5250, // min price used for "from"
     category: "welcome",
-    img: "assets/img/foamboard-welcome.jpg", // replace with your real image
-    desc: "Full-color printed welcome sign on foam board or PVC. Select size at checkout.",
+    img: "assets/img/foamboard-welcome.jpg",
+    desc: "Full-color printed welcome sign on foam board or PVC. Choose a size.",
     featured: 1,
     sizes: [
-      { label: "18\" × 24\"", price: 5250 },
-      { label: "24\" × 36\"", price: 9750 },
-      { label: "30\" × 40\"", price: 13245 },
-      { label: "36\" × 48\"", price: 18750 }
+      { label: '18" × 24"', price: 5250 },
+      { label: '24" × 36"', price: 9750 },
+      { label: '30" × 40"', price: 13245 },
+      { label: '36" × 48"', price: 18750 }
     ]
   },
-
   // Seating Chart
   {
     id: "seating-chart",
     name: "Seating Chart",
     price: 10000,
     category: "seating",
-    img: "assets/img/seating-chart.jpg", // replace with your real image
+    img: "assets/img/seating-chart.jpg",
     desc: "Custom seating chart on mirror or acrylic board. Delivery charged separately.",
     featured: 1
   },
-
-  // Custom Vinyl Decals
+  // Vinyl for DIY
   {
     id: "vinyl-decals",
     name: "Custom Vinyl Decals",
     price: 1000,
     category: "vinyl",
-    img: "assets/img/vinyl-decals.jpg", // replace with your real image
-    desc: "Personalized decals for boxes, glassware, favors, and DIY projects. Price starts at $1,000.",
+    img: "assets/img/vinyl-decals.jpg",
+    desc: "Personalised decals for DIY (boxes, glassware, favors). Starting price.",
     featured: 0
   }
 ];
 
+/* helpers */
+const minPrice = (p) => p.sizes ? Math.min(...p.sizes.map(s => s.price)) : p.price;
+
 /* ====== CART STATE ====== */
 const CART_KEY = "glimmr_cart";
-let cart = load(CART_KEY, []); // [{id, qty}, ...]
+let cart = load(CART_KEY, []); // items: {id, qty, unitPrice, optionLabel}
 
+/* compute */
 const cartCount = () => cart.reduce((n, it) => n + it.qty, 0);
-const cartTotal = () => cart.reduce((sum, it) => {
-  const p = PRODUCTS.find(x=>x.id===it.id); return sum + (p ? p.price*it.qty : 0);
-}, 0);
+const cartTotal = () => cart.reduce((sum, it) => sum + (it.unitPrice ?? (PRODUCTS.find(p=>p.id===it.id)?.price || 0)) * it.qty, 0);
 
 /* ====== NAV / ACTIVE ====== */
 function initNav(){
@@ -113,60 +113,73 @@ function renderProducts(){
     let list = PRODUCTS.slice();
 
     // search
-    const term = (q.value || "").toLowerCase().trim();
+    const term = (q?.value || "").toLowerCase().trim();
     if (term) list = list.filter(p => (p.name + " " + p.desc).toLowerCase().includes(term));
 
     // category
-    if (cat.value !== "all") list = list.filter(p => p.category === cat.value);
+    if (cat && cat.value !== "all") list = list.filter(p => p.category === cat.value);
 
     // sort
-    if (sort.value === "price-asc") list.sort((a,b)=> a.price-b.price);
-    if (sort.value === "price-desc") list.sort((a,b)=> b.price-a.price);
-    if (sort.value === "name-asc") list.sort((a,b)=> a.name.localeCompare(b.name));
-    if (sort.value === "featured") list.sort((a,b)=> b.featured - a.featured);
+    if (sort){
+      if (sort.value === "price-asc") list.sort((a,b)=> minPrice(a)-minPrice(b));
+      if (sort.value === "price-desc") list.sort((a,b)=> minPrice(b)-minPrice(a));
+      if (sort.value === "name-asc") list.sort((a,b)=> a.name.localeCompare(b.name));
+      if (sort.value === "featured") list.sort((a,b)=> b.featured - a.featured);
+    }
 
-    // render
-    grid.innerHTML = list.map(p => `
-      <article class="product" data-id="${p.id}">
-        <div class="p-img" role="img" aria-label="${p.name}">
-          <!-- Placeholder visual -->
-          <svg width="100" height="60" viewBox="0 0 100 60" aria-hidden="true">
-            <rect width="100" height="60" fill="#e9e9ee"></rect>
-            <text x="50" y="35" text-anchor="middle" font-size="10" fill="#999">GLIMMR</text>
-          </svg>
-        </div>
-        <div class="p-body">
-          <h3>${p.name}</h3>
-          <p class="muted">${p.desc}</p>
-          <div class="price">${fmtCurrency(p.price)}</div>
-        </div>
-        <div class="p-actions">
-          <button class="btn" data-action="details">Details</button>
-          <button class="btn primary" data-action="add">Add to Cart</button>
-        </div>
-      </article>
-    `).join("");
+    grid.innerHTML = list.map(p => {
+      const displayPrice = p.sizes ? `from ${fmtCurrency(minPrice(p))}` : `${fmtCurrency(p.price)}`;
+      return `
+        <article class="product" data-id="${p.id}">
+          <div class="p-img" role="img" aria-label="${p.name}">
+            <img src="${p.img}" alt="${p.name}" onerror="this.parentNode.innerHTML='<svg width=100 height=60 viewBox=0 0 100 60><rect width=100 height=60 fill=#e9e9ee></rect><text x=50 y=35 text-anchor=middle font-size=10 fill=#999>GLIMMR</text></svg>'">
+          </div>
+          <div class="p-body">
+            <h3>${p.name}</h3>
+            <p class="muted">${p.desc}</p>
+            <div class="price">${displayPrice}</div>
+          </div>
+          <div class="p-actions">
+            <button class="btn" data-action="details">Details</button>
+            <button class="btn primary" data-action="add">Add to Cart</button>
+          </div>
+        </article>
+      `;
+    }).join("");
   };
 
   [q,cat,sort].forEach(el=> el && el.addEventListener("input", apply));
   apply();
 
   grid.addEventListener("click", (e)=>{
-    const btn = e.target.closest("[data-action]");
+    const btn  = e.target.closest("[data-action]");
     if(!btn) return;
     const card = e.target.closest(".product");
-    const id = card?.dataset.id;
+    const id   = card?.dataset.id;
     if(!id) return;
 
-    if(btn.dataset.action === "add"){ addToCart(id, 1); openCart(); }
-    if(btn.dataset.action === "details"){ showDetails(id); }
+    if(btn.dataset.action === "add"){ showDetails(id, true); } // open details to capture size if needed
+    if(btn.dataset.action === "details"){ showDetails(id, false); }
   });
 }
 
-function showDetails(id){
+/* ====== DETAILS / VARIANTS ====== */
+function showDetails(id, autoAddIfSimple=false){
   const p = PRODUCTS.find(x=>x.id===id);
   if(!p) return;
+
   const modal = byId("checkout-modal");
+
+  // Build size selector if product has sizes
+  const hasSizes = Array.isArray(p.sizes) && p.sizes.length > 0;
+  const defaultPrice = hasSizes ? p.sizes[0].price : p.price;
+
+  if(!hasSizes && autoAddIfSimple){
+    addToCart({id: p.id, qty: 1, unitPrice: p.price, optionLabel: ""});
+    openCart();
+    return;
+  }
+
   modal.innerHTML = `
     <div class="modal-card" role="dialog" aria-modal="true" aria-label="Product details">
       <div class="cart-head">
@@ -175,46 +188,76 @@ function showDetails(id){
       </div>
       <div style="padding:12px">
         <p>${p.desc}</p>
-        <p class="price">${fmtCurrency(p.price)}</p>
-        <button class="btn primary" data-add>Add to Cart</button>
+        ${hasSizes ? `
+          <label>Size
+            <select id="size-select">
+              ${p.sizes.map(s => `<option value="${s.price}">${s.label} — ${fmtCurrency(s.price)}</option>`).join("")}
+            </select>
+          </label>
+        ` : ``}
+        <p class="price" id="detail-price">${fmtCurrency(defaultPrice)}</p>
+        <button class="btn primary" id="detail-add">Add to Cart</button>
       </div>
     </div>`;
   openModal(modal);
-  modal.querySelector("[data-add]").addEventListener("click", ()=> { addToCart(id,1); closeModal(modal); openCart(); });
-  modal.querySelector("[data-close]").addEventListener("click", ()=> closeModal(modal));
+
+  const close = ()=> closeModal(modal);
+  modal.querySelector("[data-close]").addEventListener("click", close);
+
+  const priceEl = byId("detail-price");
+  const sel = byId("size-select");
+  let chosenPrice = defaultPrice;
+  let chosenLabel = hasSizes ? p.sizes[0].label : "";
+
+  if(sel){
+    sel.addEventListener("change", ()=>{
+      chosenPrice = Number(sel.value);
+      chosenLabel = sel.options[sel.selectedIndex].text.split(" — ")[0]; // label before price
+      priceEl.textContent = fmtCurrency(chosenPrice);
+    });
+  }
+
+  byId("detail-add").addEventListener("click", ()=>{
+    addToCart({id: p.id, qty: 1, unitPrice: chosenPrice, optionLabel: chosenLabel});
+    close();
+    openCart();
+  });
 }
 
-/* ====== CART RENDER ====== */
-function addToCart(id, qty=1){
-  const i = cart.findIndex(x=>x.id===id);
-  if(i>=0){ cart[i].qty += qty; }
-  else { cart.push({id, qty}); }
+/* ====== CART ====== */
+function addToCart({id, qty=1, unitPrice, optionLabel=""}){
+  const keyMatch = (a,b) => a.id===b.id && (a.optionLabel||"") === (b.optionLabel||"");
+  const existingIndex = cart.findIndex(it => keyMatch(it, {id, optionLabel}));
+  if(existingIndex >= 0){ cart[existingIndex].qty += qty; }
+  else { cart.push({id, qty, unitPrice, optionLabel}); }
   save(CART_KEY, cart);
   updateCartBadge();
   renderCart();
 }
+
 function updateCartBadge(){ const el = byId("cart-count"); if(el) el.textContent = String(cartCount()); }
 
 function renderCart(){
   const drawer = byId("cart-drawer");
   if(!drawer) return;
+
   if(cart.length === 0){
     drawer.innerHTML = `
       <div class="cart-head"><strong>Your Cart</strong><button class="btn" data-close>Close</button></div>
       <div class="cart-items"><p class="muted">Cart is empty.</p></div>
-      <div class="cart-foot">
-        <div class="muted">Tip: Add a welcome sign and easel rental.</div>
-      </div>`;
+      <div class="cart-foot"><div class="muted">Tip: Add a welcome sign and easel rental.</div></div>`;
   } else {
     const rows = cart.map(it=>{
       const p = PRODUCTS.find(x=>x.id===it.id);
-      if(!p) return "";
+      const unit = it.unitPrice ?? (p?.price || 0);
+      const opt  = it.optionLabel ? `<div class="muted">${it.optionLabel}</div>` : "";
       return `
-        <div class="cart-item" data-id="${it.id}">
+        <div class="cart-item" data-id="${it.id}" data-opt="${encodeURIComponent(it.optionLabel||"")}">
           <div style="width:54px;height:54px;background:#f0f0f3;border:1px solid var(--line);border-radius:8px"></div>
           <div>
-            <div><strong>${p.name}</strong></div>
-            <div class="muted">${fmtCurrency(p.price)} each</div>
+            <div><strong>${p?.name || it.id}</strong></div>
+            ${opt}
+            <div class="muted">${fmtCurrency(unit)} each</div>
             <div class="qty">
               <button data-qty="-1" aria-label="Decrease quantity">–</button>
               <span>${it.qty}</span>
@@ -222,11 +265,9 @@ function renderCart(){
               <button data-remove class="btn" style="margin-left:8px">Remove</button>
             </div>
           </div>
-          <div><strong>${fmtCurrency(p.price * it.qty)}</strong></div>
+          <div><strong>${fmtCurrency(unit * it.qty)}</strong></div>
         </div>`;
     }).join("");
-
-    const subtotal = cartTotal();
 
     drawer.innerHTML = `
       <div class="cart-head"><strong>Your Cart</strong><button class="btn" data-close>Close</button></div>
@@ -241,38 +282,41 @@ function renderCart(){
     updateTotals();
   }
 
+  // qty changes
   drawer.querySelectorAll("[data-qty]").forEach(b=>{
     b.addEventListener("click", (e)=>{
       const row = e.target.closest(".cart-item");
-      const id = row.dataset.id; const change = Number(e.target.dataset.qty);
-      const i = cart.findIndex(x=>x.id===id); if(i<0) return;
+      const id  = row.dataset.id; 
+      const opt = decodeURIComponent(row.dataset.opt||"");
+      const change = Number(e.target.dataset.qty);
+      const i = cart.findIndex(x=> x.id===id && (x.optionLabel||"")===opt);
+      if(i<0) return;
       cart[i].qty += change;
       if(cart[i].qty<=0) cart.splice(i,1);
       save(CART_KEY, cart); updateCartBadge(); renderCart();
     });
   });
+  // remove
   drawer.querySelectorAll("[data-remove]").forEach(b=>{
     b.addEventListener("click",(e)=>{
-      const id = e.target.closest(".cart-item").dataset.id;
-      cart = cart.filter(x=>x.id!==id); save(CART_KEY,cart); updateCartBadge(); renderCart();
+      const row = e.target.closest(".cart-item");
+      const id  = row.dataset.id; 
+      const opt = decodeURIComponent(row.dataset.opt||"");
+      cart = cart.filter(x=> !(x.id===id && (x.optionLabel||"")===opt));
+      save(CART_KEY,cart); updateCartBadge(); renderCart();
     });
   });
 
-  const closeBtn = drawer.querySelector("[data-close]");
-  if(closeBtn) closeBtn.addEventListener("click", closeCart);
-
-  const promoInput = byId("promo-code");
-  if(promoInput) promoInput.addEventListener("input", updateTotals);
-
-  const checkoutBtn = byId("checkout-btn");
-  if(checkoutBtn) checkoutBtn.addEventListener("click", openCheckout);
+  drawer.querySelector("[data-close]")?.addEventListener("click", closeCart);
+  byId("promo-code")?.addEventListener("input", updateTotals);
+  byId("checkout-btn")?.addEventListener("click", openCheckout);
 }
 
 function updateTotals(){
   const subtotal = cartTotal();
   const code = (byId("promo-code")?.value || "").trim().toUpperCase();
   const discount = (code === "GLIMMR5") ? Math.round(subtotal * 0.05) : 0;
-  const estDelivery = 0; // set on quote; leave 0 here
+  const estDelivery = 0; // delivery quoted later
   const total = Math.max(subtotal - discount + estDelivery, 0);
   const el = byId("totals");
   if(!el) return;
@@ -298,7 +342,9 @@ function openCheckout(){
   const modal = byId("checkout-modal");
   const order = cart.map(it=>{
     const p = PRODUCTS.find(x=>x.id===it.id);
-    return p ? `• ${p.name} × ${it.qty} — ${fmtCurrency(p.price*it.qty)}` : "";
+    const unit = it.unitPrice ?? (p?.price || 0);
+    const opt  = it.optionLabel ? ` (${it.optionLabel})` : "";
+    return `• ${p?.name || it.id}${opt} × ${it.qty} — ${fmtCurrency(unit*it.qty)}`;
   }).join("\n");
   const subtotal = cartTotal();
   const code = (byId("promo-code")?.value || "").trim().toUpperCase();
@@ -327,7 +373,7 @@ function openCheckout(){
             </select>
           </label>
           <label>Address / Venue (if delivery)<input name="address"></label>
-          <label>Notes (names, fonts, colours, Pinterest links)
+          <label>Notes (names, fonts, colours, links)
             <textarea name="notes" rows="4"></textarea>
           </label>
           <div class="row">
@@ -335,7 +381,7 @@ function openCheckout(){
             <button type="button" id="wa-btn" class="btn">Send via WhatsApp</button>
             <button type="button" id="copy-btn" class="btn ghost">Copy Summary</button>
           </div>
-          <p class="muted">We’ll confirm final pricing, delivery, and design proofs before payment.</p>
+          <p class="muted">We’ll confirm design, delivery, and payment before production.</p>
         </form>
       </div>
     </div>`;
@@ -343,6 +389,7 @@ function openCheckout(){
   openModal(modal);
 
   modal.querySelector("[data-close]").addEventListener("click", ()=> closeModal(modal));
+
   const form = byId("checkout-form");
   form?.addEventListener("submit", (e)=>{
     e.preventDefault();
@@ -369,7 +416,9 @@ function openCheckout(){
 function buildOrderMessage(data, promo){
   const lines = cart.map(it=>{
     const p = PRODUCTS.find(x=>x.id===it.id);
-    return p ? `• ${p.name} × ${it.qty} — ${fmtCurrency(p.price*it.qty)}` : "";
+    const unit = it.unitPrice ?? (p?.price || 0);
+    const opt  = it.optionLabel ? ` (${it.optionLabel})` : "";
+    return `• ${p?.name || it.id}${opt} × ${it.qty} — ${fmtCurrency(unit*it.qty)}`;
   }).join("\n");
   const subtotal = cartTotal();
   const discount = promo==="GLIMMR5" ? Math.round(subtotal*0.05) : 0;
@@ -395,7 +444,7 @@ Notes: ${data.notes || ""}
 Preferences & next steps: confirm design, delivery, and payment link.`;
 }
 
-/* ====== CONTACT FORM (mailto fallback) ====== */
+/* ====== CONTACT FORM ====== */
 function initContactForm(){
   const form = byId("contact-form");
   if(!form) return;
@@ -408,19 +457,16 @@ function initContactForm(){
   });
 }
 
-/* ====== LIFECYCLE ====== */
+/* ====== INIT ====== */
 function init(){
-  // Year
   const y = byId("year"); if(y) y.textContent = String(new Date().getFullYear());
-
   initNav();
   renderProducts();
   renderCart();
   updateCartBadge();
+  byId("open-cart")?.addEventListener("click", openCart);
 
-  const openCartBtn = byId("open-cart"); openCartBtn?.addEventListener("click", openCart);
-
-  // close cart when clicking outside
+  // click outside to close cart
   document.addEventListener("click", (e)=>{
     const d = byId("cart-drawer");
     if(!d) return;
@@ -428,8 +474,7 @@ function init(){
       closeCart();
     }
   });
-
-  // Esc to close modal/cart
+  // Esc
   document.addEventListener("keydown", (e)=>{
     if(e.key === "Escape"){
       closeCart();
@@ -440,6 +485,3 @@ function init(){
   initContactForm();
 }
 document.addEventListener("DOMContentLoaded", init);
-
-
-
