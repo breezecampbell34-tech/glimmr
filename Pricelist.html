@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Price List — Glimmr</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="assets/style.css">
+  <script defer src="assets/app.js"></script>
+</head>
+<body data-page="pricelist">
+<header class="site-header">
+  <a class="logo" href="index.html">Glimmr</a>
+  <nav id="nav">
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">Menu</button>
+    <ul id="nav-menu" class="nav-menu">
+      <li><a href="index.html" data-active="home">Home</a></li>
+      <li><a href="shop.html" data-active="shop">Shop</a></li>
+      <li><a href="pricelist.html" data-active="pricelist">Price List</a></li>
+      <li><a href="faq.html" data-active="faq">FAQ</a></li>
+      <li><a href="about.html" data-active="about">About</a></li>
+      <li><a href="contact.html" data-active="contact">Contact</a></li>
+    </ul>
+  </nav>
+  <button class="cart-btn" id="open-cart">Cart <span class="cart-count" id="cart-count">0</span></button>
+</header>
+
+<main class="page">
+  <h1>Price List</h1>
+  <div class="table-scroll">
+    <table class="price-table" aria-describedby="pl-desc">
+      <caption id="pl-desc">Base pricing. Final quote depends on size, design complexity, and delivery.</caption>
+      <thead><tr><th>Service</th><th>What you get</th><th>From (JMD)</th><th>Add‑ons</th></tr></thead>
+      <tbody>
+    <!-- Mirror Welcome Signs (Rental) -->
+<tr><th colspan="4" style="background:#f7f7f8;">Mirror Welcome Signs (Rental)</th></tr>
+<tr><td>Mirror Welcome Sign</td><td>3h rental, vinyl lettering</td><td>8,000</td><td>Delivery charged separately</td></tr>
+<tr><td>Add-on Décor</td><td>Candles, lanterns, flowers</td><td>2,000</td><td>Optional styling upgrade</td></tr>
+
+<!-- Foam Board / PVC Welcome Signs (Purchase) -->
+<tr><th colspan="4" style="background:#f7f7f8;">Foam Board / PVC Welcome Signs (Purchase)</th></tr>
+<tr><td>18&quot; × 24&quot;</td><td>Printed, full color</td><td>5,250</td><td>Includes $750 Knutsford delivery</td></tr>
+<tr><td>24&quot; × 36&quot;</td><td>Printed, full color</td><td>9,750</td><td>Includes $750 Knutsford delivery</td></tr>
+<tr><td>30&quot; × 40&quot;</td><td>Printed, full color</td><td>13,245</td><td>Includes $750 Knutsford delivery</td></tr>
+<tr><td>36&quot; × 48&quot;</td><td>Printed, full color</td><td>18,750</td><td>Includes $750 Knutsford delivery</td></tr>
+
+<!-- Other Services -->
+<tr><th colspan="4" style="background:#f7f7f8;">Other Products & Services</th></tr>
+<tr><td>Seating Chart</td><td>Custom layout on mirror/acrylic</td><td>10,000</td><td>Delivery charged separately</td></tr>
+<tr><td>Custom Vinyl Decals</td><td>Personalised names, dates, logos</td><td>1,000</td><td>Starting price</td></tr>
+
+      </tbody>
+    </table>
+  </div>
+  <p class="muted">Prices are indicative and may be adjusted after final design confirmation.</p>
+  <a class="btn primary" href="shop.html">Start an Order</a>
+</main>
+
+<footer class="site-footer"><p>© <span id="year"></span> Glimmr.</p></footer>
+<div id="cart-drawer" class="cart-drawer" aria-hidden="true"></div>
+<div id="checkout-modal" class="modal" aria-hidden="true"></div>
+</body>
+</html>

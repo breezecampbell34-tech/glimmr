@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Glimmr — Mirror Signs, Seating Charts, Vinyl & More</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Glimmr creates modern mirror welcome signs, seating charts, and custom vinyl for DIY projects in Jamaica.">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><circle cx='32' cy='32' r='30' fill='%23ff2a55'/><text x='32' y='38' font-size='26' text-anchor='middle' fill='white' font-family='Arial'>G</text></svg>">
+  <link rel="stylesheet" href="assets/style.css">
+  <script defer src="assets/app.js"></script>
+</head>
+<body data-page="home">
+<header class="site-header">
+  <a class="logo" href="index.html">Glimmr</a>
+  <nav id="nav">
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">Menu</button>
+    <ul id="nav-menu" class="nav-menu">
+      <li><a href="index.html" data-active="home">Home</a></li>
+      <li><a href="shop.html" data-active="shop">Shop</a></li>
+      <li><a href="pricelist.html" data-active="pricelist">Price List</a></li>
+      <li><a href="faq.html" data-active="faq">FAQ</a></li>
+      <li><a href="about.html" data-active="about">About</a></li>
+      <li><a href="contact.html" data-active="contact">Contact</a></li>
+    </ul>
+  </nav>
+  <button class="cart-btn" id="open-cart" aria-label="Open cart">
+    Cart <span class="cart-count" id="cart-count">0</span>
+  </button>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Elegant event signage, done right.</h1>
+      <p>Mirror welcome signs, seating charts, and custom vinyl for DIY projects—polished, on‑brand, and photo‑ready.</p>
+      <div class="hero-cta">
+        <a class="btn primary" href="shop.html">Shop Glimmr</a>
+        <a class="btn ghost" href="pricelist.html">See Price List</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="features">
+    <h2>Services</h2>
+    <div class="cards">
+      <article class="card">
+        <h3>Mirror Welcome Signs</h3>
+        <p>Statement pieces with crisp vinyl lettering. Includes easel rental options.</p>
+      </article>
+      <article class="card">
+        <h3>Seating Charts</h3>
+        <p>Alphabetical or table-by-table layouts. Mirror or acrylic backdrops available.</p>
+      </article>
+      <article class="card">
+        <h3>Vinyl for DIY</h3>
+        <p>Pre‑cut decals for boxes, favors, champagne flutes, and more.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="split">
+    <div>
+      <h2>Why Glimmr</h2>
+      <ul class="checklist">
+        <li>Clean modern designs, fast turnaround</li>
+        <li>Event‑ready durability & easy setup</li>
+        <li>Clear pricing, friendly guidance</li>
+      </ul>
+      <a class="btn" href="faq.html">FAQs</a>
+    </div>
+    <div class="split-card">
+      <h3>Welcome Signs from <strong>JMD $8,000</strong></h3>
+      <p>3 hours included. <strong>JMD $500</strong> per extra hour. Delivery priced by location.</p>
+      <a class="btn primary" href="shop.html">Build Your Order</a>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year"></span> Glimmr. All rights reserved.</p>
+</footer>
+
+<!-- Cart + Checkout shared components -->
+<div id="cart-drawer" class="cart-drawer" aria-hidden="true"></div>
+<div id="checkout-modal" class="modal" aria-hidden="true"></div>
+</body>
+</html>
