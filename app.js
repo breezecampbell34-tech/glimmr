@@ -1,6 +1,6 @@
 /* ====== CONFIG (edit these) ====== */
-const GLIMMR_EMAIL = "hello@example.com";              // replace with your email
-const GLIMMR_WHATSAPP = "18760000000";                 // digits only, country code first (e.g., 1876xxxxxxx)
+const GLIMMR_EMAIL = "hudsoncreations@outlook.com";              // replace with your email
+const GLIMMR_WHATSAPP = "876-566-6095";                 // digits only, country code first (e.g., 1876xxxxxxx)
 const CURRENCY = "JMD";
 
 /* ====== UTIL ====== */
@@ -390,3 +390,4 @@ function init(){
   initContactForm();
 }
 document.addEventListener("DOMContentLoaded", init);
+
