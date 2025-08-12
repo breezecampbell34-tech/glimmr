@@ -16,14 +16,42 @@ const byId = (id) => document.getElementById(id);
 
 /* ====== DATA (sample products) ====== */
 const PRODUCTS = [
-  {id:"w1", name:"Mirror Welcome Sign – Classic", price:8000, category:"welcome", img:"", desc:"Timeless serif lettering on mirror.", featured:1},
-  {id:"w2", name:"Mirror Welcome Sign – Script", price:9500, category:"welcome", img:"", desc:"Elegant script font, custom names.", featured:1},
-  {id:"s1", name:"Seating Chart – 100 Guests", price:18000, category:"seating", img:"", desc:"Mirror/acrylic, table-by-table.", featured:1},
-  {id:"s2", name:"Seating Chart – 150 Guests", price:22000, category:"seating", img:"", desc:"Larger layout, design included.", featured:0},
-  {id:"v1", name:"Vinyl Decal Set – Champagne Flutes (10)", price:3000, category:"vinyl", img:"", desc:"Names/dates pre‑cut, easy transfer.", featured:0},
-  {id:"v2", name:"Custom Name Decal (per piece)", price:1500, category:"vinyl", img:"", desc:"One custom name decal.", featured:0},
-  {id:"r1", name:"Easel Rental – Standard", price:2000, category:"rental", img:"", desc:"Per event rental.", featured:0},
-  {id:"r2", name:"Easel Rental – Premium", price:3500, category:"rental", img:"", desc:"Per event rental.", featured:0},
+  {
+    id: "welcome-sign",
+    name: "Mirror Welcome Sign",
+    price: 8000,
+    category: "welcome",
+    img: "assets/img/welcome-sign.jpg", // replace with actual file path
+    desc: "Elegant mirror welcome sign with crisp vinyl lettering. 3 hours rental included. Delivery charged separately.",
+    featured: 1
+  },
+  {
+    id: "seating-chart",
+    name: "Seating Chart",
+    price: 10000,
+    category: "seating",
+    img: "assets/img/seating-chart.jpg", // replace with actual file path
+    desc: "Custom seating chart on mirror or acrylic board. Delivery charged separately.",
+    featured: 1
+  },
+  {
+    id: "decor-addons",
+    name: "Add-on Decor",
+    price: 2000,
+    category: "decor",
+    img: "assets/img/decor-addons.jpg", // replace with actual file path
+    desc: "Candles, lanterns, flowers, and more to style your signage.",
+    featured: 0
+  },
+  {
+    id: "decals",
+    name: "Custom Vinyl Decals",
+    price: 1000,
+    category: "vinyl",
+    img: "assets/img/decals.jpg", // replace with actual file path
+    desc: "Personalized decals for boxes, glassware, favors, and DIY projects. Price starts at $1,000.",
+    featured: 0
+  }
 ];
 
 /* ====== CART STATE ====== */
@@ -390,4 +418,5 @@ function init(){
   initContactForm();
 }
 document.addEventListener("DOMContentLoaded", init);
+
 
