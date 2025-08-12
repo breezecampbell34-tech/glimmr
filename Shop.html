@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Shop — Glimmr</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Shop mirror welcome signs, seating charts, and vinyl decals from Glimmr.">
+  <link rel="stylesheet" href="assets/style.css">
+  <script defer src="assets/app.js"></script>
+</head>
+<body data-page="shop">
+<header class="site-header">
+  <a class="logo" href="index.html">Glimmr</a>
+  <nav id="nav">
+    <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu">Menu</button>
+    <ul id="nav-menu" class="nav-menu">
+      <li><a href="index.html" data-active="home">Home</a></li>
+      <li><a href="shop.html" data-active="shop">Shop</a></li>
+      <li><a href="pricelist.html" data-active="pricelist">Price List</a></li>
+      <li><a href="faq.html" data-active="faq">FAQ</a></li>
+      <li><a href="about.html" data-active="about">About</a></li>
+      <li><a href="contact.html" data-active="contact">Contact</a></li>
+    </ul>
+  </nav>
+  <button class="cart-btn" id="open-cart" aria-label="Open cart">Cart <span class="cart-count" id="cart-count">0</span></button>
+</header>
+
+<main class="shop">
+  <h1>Shop</h1>
+
+  <section class="toolbar">
+    <input id="search" type="search" placeholder="Search products… (e.g., mirror, vinyl)">
+    <select id="category">
+      <option value="all">All Categories</option>
+      <option value="welcome">Mirror Welcome Signs</option>
+      <option value="seating">Seating Charts</option>
+      <option value="vinyl">Vinyl for DIY</option>
+      <option value="rental">Easel & Rentals</option>
+    </select>
+    <select id="sort">
+      <option value="featured">Sort: Featured</option>
+      <option value="price-asc">Price: Low → High</option>
+      <option value="price-desc">Price: High → Low</option>
+      <option value="name-asc">Name: A → Z</option>
+    </select>
+  </section>
+
+  <section id="product-grid" class="grid"></section>
+
+  <section class="promo">
+    <p>Have a code? Use <strong>GLIMMR5</strong> at checkout for 5% off your order total.</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year"></span> Glimmr. All rights reserved.</p>
+</footer>
+
+<div id="cart-drawer" class="cart-drawer" aria-hidden="true"></div>
+<div id="checkout-modal" class="modal" aria-hidden="true"></div>
+</body>
+</html>
